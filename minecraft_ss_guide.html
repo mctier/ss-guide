@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minecraft SS Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&family=Exo+2:wght@300;400;600;800&display=swap');
+
+  :root {
+    --bg: #0a0c10;
+    --bg2: #0f1319;
+    --bg3: #141a24;
+    --panel: #111621;
+    --border: #1e2d45;
+    --accent: #00cfff;
+    --accent2: #ff4a6e;
+    --accent3: #00ff99;
+    --gold: #ffc947;
+    --warn: #ffb300;
+    --text: #c8d8ef;
+    --text-dim: #6a7f9a;
+    --text-bright: #e8f4ff;
+    --mono: 'Share Tech Mono', monospace;
+    --head: 'Exo 2', sans-serif;
+    --body: 'Rajdhani', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Scanline overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px);
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* Header */
+  .hero {
+    background: linear-gradient(135deg, #050810 0%, #0a1525 50%, #050f1a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 40px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 50%, rgba(0,207,255,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    opacity: 0.8;
+  }
+  .hero h1 {
+    font-family: var(--head);
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--text-bright);
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero-sub {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 16px;
+  }
+  .hero-sub b { color: var(--accent3); }
+
+  /* Nav bar */
+  .toc {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .toc a {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    text-decoration: none;
+    padding: 14px 18px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .toc a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* Layout */
+  .container { max-width: 1100px; margin: 0 auto; padding: 40px 40px 80px; }
+
+  /* Section */
+  .section { margin-bottom: 56px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    background: rgba(0,207,255,0.08);
+    border: 1px solid rgba(0,207,255,0.25);
+    padding: 3px 10px;
+    letter-spacing: 2px;
+  }
+  .section-header h2 {
+    font-family: var(--head);
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-bright);
+  }
+
+  /* Cards grid */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 20px;
+    position: relative;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .card:hover { border-color: rgba(0,207,255,0.4); background: #131c2d; }
+  .card-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .tag-blue { color: var(--accent); }
+  .tag-red { color: var(--accent2); }
+  .tag-green { color: var(--accent3); }
+  .tag-gold { color: var(--gold); }
+  .tag-warn { color: var(--warn); }
+  .card h3 {
+    font-family: var(--head);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 8px;
+  }
+  .card p, .card li {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .card ul { padding-left: 16px; margin-top: 6px; }
+  .card li { margin-bottom: 3px; }
+
+  /* Code block */
+  .code-block {
+    background: #080c14;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    padding: 16px 20px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: #a8d8ff;
+    margin: 12px 0;
+    white-space: pre-wrap;
+    word-break: break-all;
+    line-height: 1.8;
+  }
+  .code-block .cmd { color: var(--accent3); }
+  .code-block .path { color: var(--gold); }
+  .code-block .comment { color: var(--text-dim); font-style: italic; }
+  .code-block .flag { color: var(--accent2); }
+
+  /* Inline code */
+  code {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: rgba(0,207,255,0.08);
+    border: 1px solid rgba(0,207,255,0.15);
+    color: var(--accent);
+    padding: 1px 6px;
+  }
+
+  /* Alert boxes */
+  .alert {
+    padding: 14px 18px;
+    margin: 16px 0;
+    border-left: 3px solid;
+    font-size: 14px;
+  }
+  .alert-info { border-color: var(--accent); background: rgba(0,207,255,0.06); }
+  .alert-warn { border-color: var(--warn); background: rgba(255,179,0,0.06); color: #ffd47a; }
+  .alert-danger { border-color: var(--accent2); background: rgba(255,74,110,0.06); color: #ff8fa3; }
+  .alert-success { border-color: var(--accent3); background: rgba(0,255,153,0.06); color: #7dffc8; }
+  .alert strong { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 2px; margin-bottom: 4px; }
+
+  /* Step list */
+  .steps { counter-reset: step; }
+  .step {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding: 18px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    position: relative;
+  }
+  .step::before {
+    counter-increment: step;
+    content: counter(step);
+    font-family: var(--mono);
+    font-size: 22px;
+    color: var(--accent);
+    opacity: 0.4;
+    min-width: 36px;
+    line-height: 1.2;
+    font-weight: bold;
+  }
+  .step-body { flex: 1; }
+  .step-body h4 {
+    font-family: var(--head);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 6px;
+  }
+  .step-body p, .step-body li { font-size: 14px; color: var(--text); }
+  .step-body ul { padding-left: 16px; margin-top: 6px; }
+
+  /* Tool table */
+  table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13.5px; }
+  th {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    background: rgba(0,0,0,0.3);
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(30,45,69,0.5);
+    color: var(--text);
+    vertical-align: top;
+  }
+  tr:hover td { background: rgba(0,207,255,0.03); }
+  td:first-child { color: var(--accent); font-family: var(--mono); font-size: 12px; }
+  .badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    letter-spacing: 1px;
+    margin-right: 4px;
+  }
+  .badge-free { background: rgba(0,255,153,0.1); color: var(--accent3); border: 1px solid rgba(0,255,153,0.2); }
+  .badge-auto { background: rgba(0,207,255,0.1); color: var(--accent); border: 1px solid rgba(0,207,255,0.2); }
+  .badge-ext { background: rgba(255,201,71,0.1); color: var(--gold); border: 1px solid rgba(255,201,71,0.2); }
+
+  /* Cheat client list */
+  .cheat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .cheat-item {
+    background: #0d1420;
+    border: 1px solid var(--border);
+    padding: 7px 12px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .cheat-item::before { content: '▸'; color: var(--accent2); font-size: 10px; }
+
+  /* Artifact reference box */
+  .artifact-box {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .artifact-title {
+    background: rgba(0,0,0,0.4);
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .artifact-title span { color: var(--text-dim); font-size: 11px; }
+  .artifact-body { padding: 14px 16px; font-size: 14px; color: var(--text); }
+  .artifact-body b { color: var(--text-bright); }
+  .artifact-path {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--gold);
+    background: rgba(0,0,0,0.3);
+    padding: 4px 10px;
+    margin-top: 8px;
+    display: block;
+  }
+
+  /* Flow diagram */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 16px 0;
+  }
+  .flow-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-bottom: none;
+    position: relative;
+  }
+  .flow-item:last-child { border-bottom: 1px solid var(--border); }
+  .flow-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .flow-text { font-size: 14px; }
+  .flow-text b { color: var(--text-bright); display: block; }
+  .flow-text small { color: var(--text-dim); font-family: var(--mono); font-size: 11px; }
+  .flow-arrow {
+    text-align: center;
+    color: var(--border);
+    font-size: 18px;
+    line-height: 1;
+    padding: 2px 0;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 40px;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+
+  hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+  /* Responsive */
+  @media(max-width:700px){
+    .hero { padding: 32px 20px 24px; }
+    .hero h1 { font-size: 28px; }
+    .container { padding: 24px 16px 60px; }
+    .toc { padding: 0 16px; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ██ HEADER ██ -->
+<div class="hero">
+  <div class="hero-tag">// Minecraft Anti-Cheat · Staff Resource</div>
+  <h1>Screen<span>Share</span> Guide</h1>
+  <div style="font-family:var(--mono);font-size:12px;color:var(--text-dim);margin-top:10px;">
+    Built around <b style="color:var(--accent)">Chicho SS Helper</b> · <b style="color:var(--accent)">RedLotus</b> · <b style="color:var(--accent)">ObsessiveBf (Rio)</b> · <b style="color:var(--accent)">Ocean AC</b> · Community Tools
+  </div>
+  <div class="hero-sub">
+    <b>DISCLAIMER:</b> This guide is for server staff conducting legitimate anti-cheat screenshares only. Always follow your server's rules and get player consent where required.
+  </div>
+</div>
+
+<!-- ██ NAV ██ -->
+<nav class="toc">
+  <a href="#overview">OVERVIEW</a>
+  <a href="#remote">REMOTE ACCESS</a>
+  <a href="#tools">TOOLS</a>
+  <a href="#artifacts">ARTIFACTS</a>
+  <a href="#workflow">WORKFLOW</a>
+  <a href="#cheatclients">CHEAT CLIENTS</a>
+  <a href="#macros">MACROS</a>
+  <a href="#bypasses">BYPASSES</a>
+  <a href="#verdict">VERDICT</a>
+</nav>
+
+<div class="container">
+
+<!-- ══════════════════════════════════════════════════
+     §0  OVERVIEW
+══════════════════════════════════════════════════ -->
+<section class="section" id="overview">
+  <div class="section-header">
+    <div class="section-num">00</div>
+    <h2>What Is a Screenshare?</h2>
+  </div>
+  <p style="font-size:15px;max-width:780px;line-height:1.8;">
+    A <b style="color:var(--text-bright)">screenshare (SS)</b> is an anti-cheat check where a server staff member remotely inspects a suspect player's PC using forensic tools to determine whether they are using unauthorized modifications (hacked clients, autoclickers, macros, etc.). Server-side anticheat alone cannot catch everything — screensharing fills that gap.
+  </p>
+
+  <div class="grid" style="margin-top:24px;">
+    <div class="card">
+      <div class="card-tag tag-blue">// Purpose</div>
+      <h3>Why SS?</h3>
+      <ul>
+        <li>Detect hacked clients that bypass server AC</li>
+        <li>Find autoclickers & hardware macros</li>
+        <li>Uncover ghost clients & RAM-injected cheats</li>
+        <li>Maintain fair play on competitive servers</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-tag tag-green">// Ethics</div>
+      <h3>SS Principles</h3>
+      <ul>
+        <li>Only SS with consent per your server rules</li>
+        <li>Don't ban based on false positives alone</li>
+        <li>Cross-verify with multiple evidence sources</li>
+        <li>Save logs/screenshots before banning</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-tag tag-gold">// Evidence</div>
+      <h3>Bannable Evidence</h3>
+      <ul>
+        <li>Active cheat client in memory / prefetch</li>
+        <li>Cheat client folder in AppData</li>
+        <li>Injected DLL into javaw.exe</li>
+        <li>Macro profiles in mouse software</li>
+        <li>Positive automated tool verdict</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     §1  REMOTE ACCESS
+══════════════════════════════════════════════════ -->
+<section class="section" id="remote">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <h2>Getting Remote Access</h2>
+  </div>
+
+  <div class="alert alert-warn">
+    <strong>// IMPORTANT</strong>
+    Tell the suspect to close Minecraft before accepting remote access. A running client can wipe itself on disconnect.
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-tag tag-blue">// Recommended</div>
+      <h3>AnyDesk</h3>
+      <p>Most widely used SS tool. Fast, supports full control.</p>
+      <div class="code-block">anydesk.com/en/downloads</div>
+      <ul style="margin-top:8px;">
+        <li>Ask suspect to share their AnyDesk ID</li>
+        <li>Request <b>full control</b> — not just view</li>
+        <li>Check privacy settings are off</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-tag tag-blue">// Alternative</div>
+      <h3>AnyViewer</h3>
+      <p>Good fallback if AnyDesk is slow or blocked. Free tier available.</p>
+      <div class="code-block">anyviewer.com</div>
+    </div>
+    <div class="card">
+      <div class="card-tag tag-warn">// Check First</div>
+      <h3>Recording Software</h3>
+      <p>Before starting, check for screen recording software that could capture your tools or techniques:</p>
+      <ul>
+        <li>OBS (obs64.exe)</li>
+        <li>Shadowplay (nvcontainer.exe)</li>
+        <li>Bandicam (bdcam.exe)</li>
+        <li>ShareX, XSplit, Action!</li>
+      </ul>
+      <p style="margin-top:8px;color:var(--text-dim);font-size:13px;">Your <code>[I] Recording Scanner</code> in Chicho SS Helper handles this automatically.</p>
+    </div>
+  </div>
+
+  <div class="alert alert-info" style="margin-top:16px;">
+    <strong>// PRO TIP</strong>
+    If the suspect's screen looks blurry, streamed, or laggy — they may be running a VM. Check Device Manager for VMware/VirtualBox adapters using <code>[13] VPN / Virtual Adapters</code>.
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     §2  TOOLS
+══════════════════════════════════════════════════ -->
+<section class="section" id="tools">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <h2>SS Tools Reference</h2>
+  </div>
+
+  <h3 style="font-family:var(--head);color:var(--text-bright);margin-bottom:16px;font-size:18px;">🔧 Your Own Tool — Chicho SS Helper</h3>
+  <p style="font-size:14px;margin-bottom:16px;">Built by <b style="color:var(--accent)">Chicho#5493</b>. An all-in-one Python tool covering automated checks, forensic scanners, browser history, prefetch analysis, macro detection, and external tool launching.</p>
+
+  <div class="grid" style="margin-bottom:28px;">
+    <div class="card">
+      <div class="card-tag tag-blue">// Automatic Checks</div>
+      <h3>Built-In Scanners</h3>
+      <ul>
+        <li><code>[1]</code> AppData cheat folders</li>
+        <li><code>[2]</code> Running processes + Java injection</li>
+        <li><code>[3]</code> .minecraft folder + latest.log</li>
+        <li><code>[10]</code> Windows Prefetch</li>
+        <li><code>[18]</code> Full auto scan (all checks)</li>
+        <li><code>[BAM]</code> BAM execution history</li>
+        <li><code>[H]</code> Macro scanner (mouse software)</li>
+        <li><code>[FF]</code> File forensics + VirusTotal</li>
+        <li><code>[NW]</code> Novoware RAM scanner</li>
+        <li><code>[BF]</code> Browser forensics (history, downloads)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-tag tag-green">// Advanced</div>
+      <h3>Advanced Forensics</h3>
+      <ul>
+        <li><code>[JP]</code> JAR Parser — Prefetch + bytecode</li>
+        <li><code>[BYP]</code> Bypass Detector — anti-forensic tools</li>
+        <li><code>[D]</code> USN Journal queries (NTFS)</li>
+        <li><code>[G]</code> Event Viewer log queries</li>
+        <li><code>[J]</code> HWID Extractor</li>
+        <li><code>[O]</code> Ocean AC PIN lookup</li>
+        <li><code>[EXT]</code> External tools (MeowModAnalyzer, ShadowClicker)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-tag tag-gold">// Manual Openers</div>
+      <h3>Quick Launchers</h3>
+      <ul>
+        <li><code>[19]</code> Task Manager</li>
+        <li><code>[20]</code> Registry Editor</li>
+        <li><code>[21]</code> AppData folder</li>
+        <li><code>[25]</code> shell:recent (Recent files)</li>
+        <li><code>[27]</code> Hosts file in Notepad</li>
+        <li><code>[28]</code> Event Viewer</li>
+        <li><code>[34]</code> Autoruns (Sysinternals)</li>
+        <li><code>[40]</code> Disk Cleanup</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr>
+
+  <h3 style="font-family:var(--head);color:var(--text-bright);margin-bottom:16px;margin-top:28px;font-size:18px;">🔴 RedLotus Tools</h3>
+  <p style="font-size:14px;margin-bottom:16px;">
+    Community-standard SS toolkit suite. The <b style="color:var(--accent)">RedLotus Tool Downloader</b> auto-fetches the latest versions of all tools to <code>C:\SS1</code>. Access via: <code>github.com/ItzIceHere/RedLotus-Tool-Downloader</code><br>
+    Full guide: <code>itzicehere.gitbook.io/redlotusguide</code>
+  </p>
+
+  <table>
+    <thead>
+      <tr><th>Tool</th><th>By</th><th>Purpose</th><th>Type</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Paths Parser</td>
+        <td>Spok</td>
+        <td>Parses Prefetch files and extracts referenced file paths — essential for finding deleted cheats</td>
+        <td><span class="badge badge-ext">EXTERNAL</span></td>
+      </tr>
+      <tr>
+        <td>BAM Parser</td>
+        <td>Spok</td>
+        <td>Reads Background Activity Moderator registry keys for program execution history (survives reboots)</td>
+        <td><span class="badge badge-ext">EXTERNAL</span></td>
+      </tr>
+      <tr>
+        <td>Prefetch Parser (PECmd)</td>
+        <td>Spok / Zimmerman</td>
+        <td>Detailed .pf file analysis — run count, last 8 timestamps, DLL/paths referenced</td>
+        <td><span class="badge badge-ext">EXTERNAL</span></td>
+      </tr>
+      <tr>
+        <td>JournalTrace</td>
+        <td>Spok</td>
+        <td>Queries the NTFS USN Journal for file creation/deletion events — finds self-destructed files</td>
+        <td><span class="badge badge-ext">EXTERNAL</span></td>
+      </tr>
+      <tr>
+        <td>Kernel Live Dump Analyzer</td>
+        <td>Spok</td>
+        <td>Analyses Windows kernel live dump for traces of cheats loaded into kernel space</td>
+        <td><span class="badge badge-ext">EXTERNAL</span></td>
+      </tr>
+      <tr>
+        <td>process-parser</td>
+        <td>Spok</td>
+        <td>Dumps and parses running process list with loaded modules — spots injected DLLs</td>
+        <td><span class="badge badge-ext">EXTERNAL</span></td>
+      </tr>
+      <tr>
+        <td>RedLotus Mod Analyzer</td>
+        <td>RedLotus</td>
+        <td>Automated forensic scan of mods folder — detects obfuscation, hash mismatches, cheat signatures</td>
+        <td><span class="badge badge-auto">AUTO</span></td>
+      </tr>
+      <tr>
+        <td>MeowModAnalyzer</td>
+        <td>MeowTonynoh</td>
+        <td>Cheat signature scanner with PE file forensics</td>
+        <td><span class="badge badge-auto">AUTO</span></td>
+      </tr>
+      <tr>
+        <td>ShadowClicker</td>
+        <td>MeowTonynoh</td>
+        <td>AutoClicker and macro detection tool</td>
+        <td><span class="badge badge-auto">AUTO</span></td>
+      </tr>
+      <tr>
+        <td>WinPrefetchView</td>
+        <td>NirSoft</td>
+        <td>GUI viewer for Prefetch files — easy to show suspect evidence</td>
+        <td><span class="badge badge-free">FREE</span></td>
+      </tr>
+      <tr>
+        <td>LastActivityView</td>
+        <td>NirSoft</td>
+        <td>Timeline of all user activity — file opens, program runs, USB plug-ins</td>
+        <td><span class="badge badge-free">FREE</span></td>
+      </tr>
+      <tr>
+        <td>USBDeview</td>
+        <td>NirSoft</td>
+        <td>Full history of all USB devices ever connected — detects hardware macro devices</td>
+        <td><span class="badge badge-free">FREE</span></td>
+      </tr>
+      <tr>
+        <td>JAR Parser (JARParser.exe)</td>
+        <td>Community</td>
+        <td>Prefetch-based JAR analysis + bytecode scanning for cheat signatures</td>
+        <td><span class="badge badge-ext">EXTERNAL</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <h3 style="font-family:var(--head);color:var(--text-bright);margin-bottom:16px;margin-top:28px;font-size:18px;">🌊 Ocean Anti-Cheat</h3>
+  <p style="font-size:14px;margin-bottom:12px;">
+    Free automated SS tool developed by <b style="color:var(--accent)">Rancio</b>. Successor to the Golden SS Tool. Sends results to a web dashboard with a PIN system — no need to read raw output yourself.
+  </p>
+  <div class="code-block">
+<span class="comment">// How to use Ocean AC during an SS:</span>
+1. Direct suspect to: <span class="path">https://anticheat.ac</span>
+2. They download and run the Ocean scan tool
+3. They send you the 6-digit PIN
+4. You enter PIN in Chicho SS Helper → <span class="cmd">[O] Ocean PIN Lookup</span>
+   OR visit: <span class="path">https://anticheat.ac/api/pins/&lt;PIN&gt;</span>
+
+<span class="comment">// Also supported via PowerShell (RedLotus BAM script):</span>
+<span class="cmd">iex</span>(New-Object Net.WebClient).<span class="cmd">DownloadString</span>(<span class="path">'https://raw.githubusercontent.com/PureIntent/ScreenShare/main/RedLotusBam.ps1'</span>)
+<span class="comment">// Shows unverified programs — inspect each one carefully</span>
+  </div>
+
+  <h3 style="font-family:var(--head);color:var(--text-bright);margin-bottom:16px;margin-top:28px;font-size:18px;">🔵 ObsessiveBf (Rio) Tools</h3>
+  <p style="font-size:14px;margin-bottom:16px;">
+    Check <code>github.com/ObsessiveBf</code> for Rio's screenshare utility repositories. These typically include PowerShell-based artifact analyzers and detection scripts used alongside manual checks.
+  </p>
+
+  <h3 style="font-family:var(--head);color:var(--text-bright);margin-bottom:16px;margin-top:28px;font-size:18px;">⚡ Other Community Tools</h3>
+  <div class="grid">
+    <div class="card">
+      <div class="card-tag tag-blue">// Free</div>
+      <h3>Echo SS Tool</h3>
+      <ul>
+        <li>Standalone manual analysis utilities</li>
+        <li>Partners with RedLotus guide</li>
+        <li>Invite: discord.com/invite/echoac</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-tag tag-green">// Free / Open Source</div>
+      <h3>Silent Scanner</h3>
+      <ul>
+        <li>Open source C# scanner</li>
+        <li>Press Scan and wait for results</li>
+        <li>github.com/Silenttttttt/Silent-scanner</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-tag tag-gold">// Sysinternals</div>
+      <h3>Process Hacker / System Informer</h3>
+      <ul>
+        <li>View DLLs loaded by javaw.exe</li>
+        <li>See memory-mapped files</li>
+        <li>Spot hidden processes</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     §3  ARTIFACTS
+══════════════════════════════════════════════════ -->
+<section class="section" id="artifacts">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <h2>Key Windows Forensic Artifacts</h2>
+  </div>
+
+  <div class="artifact-box">
+    <div class="artifact-title">PREFETCH <span>Program Execution Evidence</span></div>
+    <div class="artifact-body">
+      <b>What it is:</b> Windows stores <code>.pf</code> files every time an executable runs, capturing the program name, run count, last 8 run timestamps, and DLLs/paths referenced. Files persist even after the executable is deleted.
+      <span class="artifact-path">C:\Windows\Prefetch\CHEATCLIENT.EXE-XXXXXXXX.pf</span>
+      <b>How to check:</b> Chicho <code>[10]</code>, WinPrefetchView (NirSoft), Spok's Prefetch Parser (PECmd). Look for injector names, cheat client names, or suspicious executables. Check the referenced paths — they may point to deleted files.
+      <div class="alert alert-success" style="margin-top:10px;font-size:13px;">
+        <strong>// BANNABLE INDICATOR</strong>
+        A .pf file for a known cheat client exe, or a prefetch file referencing a cheat .jar file from the mods folder.
+      </div>
+    </div>
+  </div>
+
+  <div class="artifact-box">
+    <div class="artifact-title">BAM — Background Activity Moderator <span>Execution Registry</span></div>
+    <div class="artifact-body">
+      <b>What it is:</b> A Windows registry key that logs executables that have run. Useful because it includes last execution timestamps and survives program deletion.
+      <span class="artifact-path">HKLM\SYSTEM\CurrentControlSet\Services\bam\State\UserSettings\&lt;SID&gt;\</span>
+      <b>How to check:</b> Chicho <code>[BAM]</code>, Spok's BAM Parser, or run the RedLotus BAM PowerShell script. Look for cheat-named executables.
+    </div>
+  </div>
+
+  <div class="artifact-box">
+    <div class="artifact-title">SHIMCACHE / AMCACHE <span>Additional Execution Evidence</span></div>
+    <div class="artifact-body">
+      <b>Shimcache:</b> Registry entry logging executables Windows has encountered or executed. Includes file path.
+      <b>Amcache.hve:</b> More detailed — stores file paths, SHA1 hashes, and timestamps of recently executed programs. Can prove a cheat existed even if every other trace is gone.
+      <span class="artifact-path">HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\AppCompatCache</span>
+      <span class="artifact-path">C:\Windows\AppCompat\Programs\Amcache.hve</span>
+    </div>
+  </div>
+
+  <div class="artifact-box">
+    <div class="artifact-title">SHELL:RECENT <span>Recently Opened Files</span></div>
+    <div class="artifact-body">
+      <b>What it is:</b> A folder of shortcuts to recently opened files and folders. Opened with <code>shell:recent</code> or via Start → Run. Shows what files the suspect has been accessing — useful for finding cheat-related files they tried to hide.
+      <span class="artifact-path">C:\Users\&lt;username&gt;\AppData\Roaming\Microsoft\Windows\Recent</span>
+      <b>How to check:</b> Chicho <code>[5]</code>, or manually open via <code>Win+R → shell:recent</code>. Look for recently opened .jar, .exe, or .zip files outside of legitimate software.
+    </div>
+  </div>
+
+  <div class="artifact-box">
+    <div class="artifact-title">NTFS USN JOURNAL <span>File System Activity</span></div>
+    <div class="artifact-body">
+      <b>What it is:</b> The Windows NTFS journal records file creation, modification, and deletion events at a system level. A cheat that "self-destructs" still leaves a trace in the journal because the deletion itself is logged.
+      <b>How to check:</b> Chicho <code>[D] USN Journal</code>, Spok's JournalTrace, or: <code>fsutil usn readdata C: 0 2048</code>
+      <div class="alert alert-success" style="margin-top:10px;font-size:13px;">
+        <strong>// BANNABLE INDICATOR</strong>
+        USN Journal entry showing a cheat-named file was created and then deleted recently — classic self-destruct behavior.
+      </div>
+    </div>
+  </div>
+
+  <div class="artifact-box">
+    <div class="artifact-title">BROWSER DOWNLOADS <span>Download History</span></div>
+    <div class="artifact-body">
+      <b>What it is:</b> Browsers (Chrome, Edge, Brave, Firefox) keep a SQLite database of every file ever downloaded, including files that were later deleted. Shows filename, URL source, timestamp, and whether the file still exists on disk.
+      <span class="artifact-path">%LOCALAPPDATA%\Google\Chrome\User Data\Default\History</span>
+      <b>How to check:</b> Chicho <code>[BF] Browser Forensics → Downloads</code>. Look for downloaded .jar, .exe, .zip files. A deleted cheat that shows as <code>[DELETED]</code> in the downloads list but with a cheat-related filename is strong evidence.
+    </div>
+  </div>
+
+  <div class="artifact-box">
+    <div class="artifact-title">APPDATA FOLDERS <span>Cheat Client Residue</span></div>
+    <div class="artifact-body">
+      <b>What it is:</b> Many cheat clients create their own folder in AppData/Roaming or AppData/Local — even after the client itself is deleted, the config folder often remains.
+      <span class="artifact-path">%APPDATA%\&lt;ClientName&gt;\ or %LOCALAPPDATA%\&lt;ClientName&gt;\</span>
+      <b>How to check:</b> Chicho <code>[1]</code> and <code>[S]</code>, or manually browse AppData. Note: Prestige client requires a Windows Firewall whitelist — check <code>[7] Hosts file</code> and firewall rules.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     §4  WORKFLOW
+══════════════════════════════════════════════════ -->
+<section class="section" id="workflow">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <h2>SS Workflow — Step by Step</h2>
+  </div>
+
+  <div class="alert alert-warn">
+    <strong>// BEFORE YOU START</strong>
+    Make the suspect close Minecraft BEFORE you connect. A running ghost client can wipe itself when it detects remote access or an unexpected disconnect.
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-body">
+        <h4>Establish Remote Access</h4>
+        <ul>
+          <li>Have suspect download AnyDesk / AnyViewer</li>
+          <li>Request full control</li>
+          <li>Tell them to close Minecraft and all recording software</li>
+          <li>Check their screen isn't being mirrored (look for unusual lag/artifacting = possible VM)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-body">
+        <h4>Initial Environment Check</h4>
+        <ul>
+          <li>Run Chicho SS Helper as Administrator</li>
+          <li>Check <code>[I] Recording Scanner</code> — kill OBS/Bandicam/Shadowplay if found</li>
+          <li>Check <code>[13] VPN / Virtual Adapters</code> — note any VPNs or VM adapters</li>
+          <li>Run <code>[2] Running Processes</code> — look for suspicious process names and Java injection</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-body">
+        <h4>Run Automated Scans</h4>
+        <ul>
+          <li><code>[18] Full Auto Scan</code> in Chicho SS Helper — covers all built-in checks</li>
+          <li>Run <b>Ocean Anti-Cheat</b> — give suspect the link, collect PIN, lookup results via <code>[O]</code></li>
+          <li>Run RedLotus PowerShell BAM script (lists unverified programs)</li>
+          <li>Launch <code>[EXT] External Tools</code> → MeowModAnalyzer for PE/signature scan</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-body">
+        <h4>Forensic Artifact Review</h4>
+        <ul>
+          <li><code>[10] Prefetch</code> — search for cheat-named .pf files</li>
+          <li><code>[BAM]</code> — check execution history in registry</li>
+          <li><code>[5] shell:recent</code> — recently opened suspicious files</li>
+          <li><code>[D] USN Journal</code> — look for recently created & deleted files (self-destructs)</li>
+          <li><code>[BF] Browser Downloads</code> — check for deleted .jar/.exe downloads</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-body">
+        <h4>Minecraft-Specific Checks</h4>
+        <ul>
+          <li><code>[3] .minecraft folder</code> — check mods, versions, latest.log</li>
+          <li><code>[K] Launcher Scanner</code> — check Prism, Lunar, Badlion, TLauncher etc.</li>
+          <li><code>[M] Java Arguments</code> — look for -javaagent, -tweakclass, unexpected agents</li>
+          <li><code>[JP] JAR Parser</code> — deep bytecode scan of mod JARs for cheat signatures</li>
+          <li>Check <code>launcher_profiles.json</code> for non-standard Java paths or suspicious version IDs</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-body">
+        <h4>Macro / Input Device Check</h4>
+        <ul>
+          <li><code>[H] Macro Scanner</code> — checks Logitech, Razer, SteelSeries, ASUS ROG, Corsair, etc.</li>
+          <li><code>[EXT] ShadowClicker</code> (MeowTonynoh) — dedicated autoclicker detector</li>
+          <li>Check mouse software config folders manually for macro profiles</li>
+          <li>Run USBDeview (NirSoft) via <code>[A] Manual Tools</code> — check for suspicious USB devices</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-body">
+        <h4>Advanced Checks (if needed)</h4>
+        <ul>
+          <li><code>[BYP] Bypass Detector</code> — check for anti-forensic tools (CCleaner, timestamp modifiers, etc.)</li>
+          <li><code>[FF] File Forensics</code> — deep scan + VirusTotal for suspicious files</li>
+          <li><code>[NW] Novoware Scanner</code> — RAM scan for Novoware cheat signatures</li>
+          <li>Process Hacker / System Informer — manually check javaw.exe loaded DLL list</li>
+          <li><code>[G] Event Viewer</code> — check for suspicious event log entries</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-body">
+        <h4>Save Report & Verdict</h4>
+        <ul>
+          <li>Run <code>[R] Save Full Scan Report</code> — dumps all results to Desktop</li>
+          <li>Screenshot key evidence before closing</li>
+          <li>Log HWID via <code>[J] HWID Extractor</code></li>
+          <li>Cross-verify findings — don't ban on a single uncertain indicator</li>
+          <li>If banning: record session video, save report file, document everything</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     §5  CHEAT CLIENTS
+══════════════════════════════════════════════════ -->
+<section class="section" id="cheatclients">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <h2>Known Cheat Clients</h2>
+  </div>
+  <p style="font-size:14px;margin-bottom:16px;">These are the clients Chicho SS Helper scans for by default, plus additional ones to be aware of:</p>
+
+  <div class="grid" style="margin-bottom:20px;">
+    <div class="card">
+      <div class="card-tag tag-red">// Common / Well-Known</div>
+      <h3>Widely Detected</h3>
+      <div class="cheat-grid">
+        <div class="cheat-item">Vape V4</div>
+        <div class="cheat-item">Sigma</div>
+        <div class="cheat-item">LiquidBounce</div>
+        <div class="cheat-item">Meteor</div>
+        <div class="cheat-item">Wurst</div>
+        <div class="cheat-item">Future</div>
+        <div class="cheat-item">Aristois</div>
+        <div class="cheat-item">Impact</div>
+        <div class="cheat-item">Raven</div>
+        <div class="cheat-item">Inertia</div>
+        <div class="cheat-item">Novoline</div>
+        <div class="cheat-item">Wolfram</div>
+        <div class="cheat-item">Astolfo</div>
+        <div class="cheat-item">Drip</div>
+        <div class="cheat-item">Salhack</div>
+        <div class="cheat-item">Ares</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-tag tag-warn">// Private / Harder to Detect</div>
+      <h3>Community Privates</h3>
+      <div class="cheat-grid">
+        <div class="cheat-item">Prestige</div>
+        <div class="cheat-item">Velaris</div>
+        <div class="cheat-item">Cyemer</div>
+        <div class="cheat-item">ZenithMacros</div>
+        <div class="cheat-item">Doomsday</div>
+        <div class="cheat-item">Bleach</div>
+        <div class="cheat-item">Vapor</div>
+        <div class="cheat-item">Dusk</div>
+        <div class="cheat-item">Azura</div>
+        <div class="cheat-item">Vertex</div>
+        <div class="cheat-item">Nexus</div>
+        <div class="cheat-item">Rise</div>
+        <div class="cheat-item">Lucid</div>
+        <div class="cheat-item">Ketamine</div>
+        <div class="cheat-item">Reflex</div>
+        <div class="cheat-item">Exodus</div>
+        <div class="cheat-item">Zenith</div>
+        <div class="cheat-item">Novoware</div>
+        <div class="cheat-item">Argon</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-info">
+    <strong>// DETECTION NOTES</strong>
+    Zenith/ZenithMacros may appear in Task Manager under its logo name — easy to spot visually. Prestige requires the Windows Firewall to whitelist it — check firewall rules. Clients like Novoware use RAM injection and may leave no file traces — use <code>[NW]</code> RAM scanner.
+  </div>
+
+  <h3 style="font-family:var(--head);color:var(--text-bright);margin:24px 0 12px;font-size:17px;">Where to Look for Each</h3>
+  <table>
+    <thead><tr><th>Location</th><th>What to Look For</th><th>Chicho Key</th></tr></thead>
+    <tbody>
+      <tr><td>C:\Windows\Prefetch</td><td>CLIENTNAME.EXE-*.pf files</td><td>[10]</td></tr>
+      <tr><td>%APPDATA% / %LOCALAPPDATA%</td><td>Client config folders</td><td>[1], [S]</td></tr>
+      <tr><td>javaw.exe modules</td><td>Injected .dll files</td><td>[2]</td></tr>
+      <tr><td>.minecraft\mods</td><td>Obfuscated or unknown .jar files</td><td>[3], [JP]</td></tr>
+      <tr><td>Browser downloads DB</td><td>Downloaded + deleted .jar/.exe</td><td>[BF]</td></tr>
+      <tr><td>NTFS USN Journal</td><td>Created + deleted suspicious files</td><td>[D]</td></tr>
+      <tr><td>BAM Registry</td><td>Execution timestamps</td><td>[BAM]</td></tr>
+      <tr><td>Java RAM (javaw.exe)</td><td>Signature byte patterns in memory</td><td>[NW]</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     §6  MACROS
+══════════════════════════════════════════════════ -->
+<section class="section" id="macros">
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <h2>Macro & AutoClicker Detection</h2>
+  </div>
+
+  <div class="grid" style="margin-bottom:20px;">
+    <div class="card">
+      <div class="card-tag tag-blue">// Software Macros</div>
+      <h3>Mouse / Keyboard Software</h3>
+      <p>Checked automatically by Chicho <code>[H]</code> and the .bat macro section:</p>
+      <ul>
+        <li>Logitech G HUB / Gaming Software</li>
+        <li>Razer Synapse</li>
+        <li>SteelSeries GG / Engine</li>
+        <li>Corsair iCUE</li>
+        <li>ASUS ROG Armoury Crate</li>
+        <li>Roccat SWARM</li>
+        <li>Alienware Command Center</li>
+        <li>MarsGaming MMGX</li>
+        <li>Bloody / A4Tech</li>
+        <li>Marvo, AYAX, Blackweb, SPC Gear</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-tag tag-warn">// Hardware Macros</div>
+      <h3>On-Board Macro Devices</h3>
+      <p>Stored on the mouse/keyboard itself — doesn't require software:</p>
+      <ul>
+        <li>Check USB device history via USBDeview</li>
+        <li>Chicho <code>[D]</code> can detect injected USB devices</li>
+        <li>Look for unusual HID devices in Device Manager</li>
+        <li>Some use custom USB hubs to hide secondary devices</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-tag tag-green">// Detection Tips</div>
+      <h3>What to Check</h3>
+      <ul>
+        <li>Profile files in mouse software AppData folders</li>
+        <li>Macro folder under each software's data directory</li>
+        <li>Run ShadowClicker (<code>[EXT]</code>) for automated detection</li>
+        <li>Check debounce time (normal: 10–25ms; cheating: &lt;2ms)</li>
+        <li>Logitech: <code>%LOCALAPPDATA%\LGHUB\settings.db</code></li>
+        <li>Razer: <code>%APPDATA%\Razer\Synapse3\Settings\</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="alert alert-danger">
+    <strong>// IMPORTANT — Debounce Abuse</strong>
+    Many servers ban for debounce times under a threshold (varies by server, typically &lt;4ms or &lt;10ms). Check your server's specific rule on this before issuing a ban.
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     §7  BYPASSES
+══════════════════════════════════════════════════ -->
+<section class="section" id="bypasses">
+  <div class="section-header">
+    <div class="section-num">07</div>
+    <h2>Common Bypass Techniques</h2>
+  </div>
+  <p style="font-size:14px;margin-bottom:20px;">Cheaters may try to destroy evidence or confuse your checks. Knowing these helps you counter them — and some are ban-worthy on their own if your server rules say so.</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-tag tag-red">// Evidence Destruction</div>
+      <h3>Self-Destruct / File Wipe</h3>
+      <ul>
+        <li>Client deletes itself when game closes</li>
+        <li>CCleaner run before SS</li>
+        <li>Prefetch disabled (check in settings)</li>
+        <li>Event log cleared</li>
+      </ul>
+      <p style="margin-top:8px;color:var(--text-dim);font-size:13px;"><b style="color:var(--warn)">Counter:</b> USN Journal, BAM, browser downloads, Amcache all persist past file deletion. Check <code>[BYP]</code> for anti-forensic tool traces.</p>
+    </div>
+    <div class="card">
+      <div class="card-tag tag-red">// Execution Hiding</div>
+      <h3>Prefetch Disable / Timestamp Spoof</h3>
+      <ul>
+        <li>Disabling prefetch via registry</li>
+        <li>Modifying file timestamps</li>
+        <li>Unicode chars in filenames to evade string matching</li>
+        <li>Packing/obfuscating cheat JARs</li>
+      </ul>
+      <p style="margin-top:8px;color:var(--text-dim);font-size:13px;"><b style="color:var(--warn)">Counter:</b> Prefetch being disabled is itself suspicious. Use <code>[JP]</code> JAR Parser for bytecode-level detection. Unicode Detector (in RedLotus tools) catches unicode-named files.</p>
+    </div>
+    <div class="card">
+      <div class="card-tag tag-red">// Environment Hiding</div>
+      <h3>VM / Remote Desktop</h3>
+      <ul>
+        <li>Running Minecraft in a VM so SS sees clean host</li>
+        <li>Unusual screen latency / blurring artifacts</li>
+        <li>VMware, VirtualBox adapters in Device Manager</li>
+        <li>Hyper-V indicators</li>
+      </ul>
+      <p style="margin-top:8px;color:var(--text-dim);font-size:13px;"><b style="color:var(--warn)">Counter:</b> Chicho <code>[13]</code> checks for virtual network adapters. Check msinfo32 <code>[30]</code> for hardware info. VMs often lack GPU and show generic display adapters.</p>
+    </div>
+    <div class="card">
+      <div class="card-tag tag-red">// Connection Hiding</div>
+      <h3>VPN During SS</h3>
+      <ul>
+        <li>Running a VPN while being screenshared</li>
+        <li>Can indicate suspicion or privacy concern</li>
+      </ul>
+      <p style="margin-top:8px;color:var(--text-dim);font-size:13px;"><b style="color:var(--warn)">Action:</b> Your .bat asks whether to continue if Windscribe/PIA/ProtonVPN/IPVanish is detected. Per server rules, this may require the suspect to disconnect the VPN or be treated as a refusal to SS.</p>
+    </div>
+    <div class="card">
+      <div class="card-tag tag-red">// RAM Injection</div>
+      <h3>Ghost Clients</h3>
+      <ul>
+        <li>Injected directly into javaw.exe memory</li>
+        <li>No files on disk at all</li>
+        <li>Loaded via a separate injector process that was then killed</li>
+      </ul>
+      <p style="margin-top:8px;color:var(--text-dim);font-size:13px;"><b style="color:var(--warn)">Counter:</b> Use <code>[NW]</code> Novoware RAM scanner, Process Hacker DLL list for javaw.exe, and injector names in Prefetch.</p>
+    </div>
+    <div class="card">
+      <div class="card-tag tag-warn">// Hosts File</div>
+      <h3>Blocked Sites / Firewall</h3>
+      <ul>
+        <li>Blocked cheat-detection sites in hosts file</li>
+        <li>Windows Firewall rules for cheat client whitelisting (e.g. Prestige)</li>
+      </ul>
+      <p style="margin-top:8px;color:var(--text-dim);font-size:13px;"><b style="color:var(--warn)">Counter:</b> Chicho <code>[7]</code> opens hosts file in Notepad. Check Windows Firewall rules via <code>[33]</code> or manually in Windows Security.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     §8  USEFUL COMMANDS
+══════════════════════════════════════════════════ -->
+<section class="section" id="verdict">
+  <div class="section-header">
+    <div class="section-num">08</div>
+    <h2>Useful Manual Commands & Quick Reference</h2>
+  </div>
+
+  <div class="code-block">
+<span class="comment">// Quick open locations (Win+R)</span>
+<span class="cmd">shell:recent</span>                 <span class="comment">→ Recently opened files</span>
+<span class="cmd">%appdata%</span>                    <span class="comment">→ Roaming AppData</span>
+<span class="cmd">%localappdata%</span>               <span class="comment">→ Local AppData</span>
+<span class="cmd">%appdata%\.minecraft</span>          <span class="comment">→ .minecraft folder</span>
+<span class="cmd">C:\Windows\Prefetch</span>           <span class="comment">→ Prefetch files</span>
+
+<span class="comment">// CMD — Prefetch list</span>
+<span class="cmd">dir</span> C:\Windows\Prefetch /b *.pf
+
+<span class="comment">// CMD — Check for cheat folder in AppData</span>
+<span class="cmd">dir</span> <span class="path">%appdata%</span> /b | <span class="cmd">findstr</span> /i "vape sigma prestige velaris zenith"
+
+<span class="comment">// PowerShell — BAM execution history</span>
+<span class="cmd">Get-ItemProperty</span> "HKLM:\SYSTEM\CurrentControlSet\Services\bam\State\UserSettings\*" | Select-Object -ExpandProperty PSChildName
+
+<span class="comment">// PowerShell — List javaw.exe loaded modules</span>
+<span class="cmd">Get-Process</span> javaw | <span class="cmd">Select-Object</span> -ExpandProperty Modules | <span class="cmd">Select</span> ModuleName, FileName
+
+<span class="comment">// CMD — Netstat (active connections)</span>
+<span class="cmd">netstat</span> <span class="flag">-ano</span>
+
+<span class="comment">// PowerShell — RedLotus BAM Script (unverified programs)</span>
+<span class="cmd">iex</span>(New-Object Net.WebClient).DownloadString('<span class="path">https://raw.githubusercontent.com/PureIntent/ScreenShare/main/RedLotusBam.ps1</span>')
+
+<span class="comment">// CMD — USN Journal query (file system history)</span>
+<span class="cmd">fsutil usn readdata</span> C: 0 2048
+  </div>
+
+  <hr>
+
+  <h3 style="font-family:var(--head);color:var(--text-bright);margin-bottom:16px;font-size:18px;">📋 Verdict & Evidence Standards</h3>
+  <div class="grid">
+    <div class="card">
+      <div class="card-tag tag-red">// Definitive Ban</div>
+      <h3>Strong Evidence</h3>
+      <ul>
+        <li>Active cheat client in process list</li>
+        <li>Cheat DLL injected into javaw.exe</li>
+        <li>Positive Ocean AC / auto-tool verdict</li>
+        <li>Cheat-named .pf in Prefetch + file deleted</li>
+        <li>Cheat client config folder in AppData</li>
+        <li>Cheat .jar confirmed in mods folder</li>
+        <li>Cheat signatures found in RAM</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-tag tag-warn">// Supporting Evidence</div>
+      <h3>Suspicious Indicators</h3>
+      <ul>
+        <li>Browser downloads show deleted cheat .exe/.jar</li>
+        <li>USN Journal shows recently deleted cheat file</li>
+        <li>BAM shows cheat-named execution recently</li>
+        <li>Macro profile found in mouse software</li>
+        <li>Prefetch disabled / event logs cleared</li>
+        <li>Non-standard Java paths in launcher profiles</li>
+        <li>Obfuscated .jar in mods folder (server policy dependent)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-tag tag-green">// Best Practice</div>
+      <h3>Before Banning</h3>
+      <ul>
+        <li>✔ Cross-verify with 2+ independent evidence sources</li>
+        <li>✔ Save the full report (<code>[R]</code> in Chicho)</li>
+        <li>✔ Screenshot key evidence</li>
+        <li>✔ Record the session if possible</li>
+        <li>✔ Log their HWID (<code>[J]</code>) for future reference</li>
+        <li>✔ Follow your server's ban policy exactly</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="alert alert-info" style="margin-top:24px;">
+    <strong>// RESOURCES</strong>
+    RedLotus Full Guide: <code>itzicehere.gitbook.io/redlotusguide</code> · RedLotus Discord: <code>discord.gg/Z8MqyYwE</code> · Ocean AC: <code>anticheat.ac</code> · Chicho SS Helper: your uploaded tool · Spok's tools, Echo tools, NirSoft suite: available via RedLotus Tool Downloader at <code>github.com/ItzIceHere/RedLotus-Tool-Downloader</code>
+  </div>
+</section>
+
+</div>
+
+<div class="footer">
+  MINECRAFT SS GUIDE · BUILT FOR CPQUSTAFF & COMMUNITY · TOOLS: CHICHO SS HELPER + REDLOTUS + OCEAN AC + COMMUNITY
+</div>
+
+</body>
+</html>
